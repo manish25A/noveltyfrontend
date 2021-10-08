@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Card, Button } from 'react-bootstrap';
-
+import Individual from './Individual';
 function Dashboard() {
 	const [stocks, setStocks] = useState([]);
 	const [quantity, setQuantity] = useState([]);
@@ -62,6 +62,7 @@ function Dashboard() {
 					<Card.Text>Current Amount</Card.Text>
 					{currentAmount}
 				</Card>
+				<Individual />
 			</Container>
 		</div>
 	);
