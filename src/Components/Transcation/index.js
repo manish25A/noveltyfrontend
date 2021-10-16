@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import { Container, Form, Row, Col, Button } from 'react-bootstrap';
 import axios from 'axios';
 function TranscationPage() {
@@ -8,9 +9,12 @@ function TranscationPage() {
 		quantity: '',
 		price: '',
 		transcation_type: '',
+		total_price: '',
 	});
+	let history = useHistory();
+
 	useEffect(() => {
-		async function getCharacters() {
+		async function getData() {
 			const response = await fetch('http://localhost:5000/stocks/getstocks');
 			const body = await response.json();
 			console.log(body.data);
@@ -22,12 +26,11 @@ function TranscationPage() {
 				}))
 			);
 		}
-		getCharacters();
+		getData();
 	}, []);
 	const handleSubmit = () => {
-		axios
-			.post('http://localhost:5000/stocks/new', stockData)
-			.then((res) => alert(res));
+		axios.post('http://localhost:5000/stocks/new', stockData);
+		history.push('/');
 	};
 
 	return (
@@ -69,7 +72,7 @@ function TranscationPage() {
 							/>
 						</Form.Group>
 						<Form.Group as={Col} controlId='formGridState'>
-							<Form.Label>Choose stock</Form.Label>
+							<Form.Label>Transcation Type</Form.Label>
 							<select
 								className='dropdown-header'
 								name='stockName'
@@ -96,6 +99,19 @@ function TranscationPage() {
 									setStockData({ ...stockData, price: e.target.value })
 								}
 								value={stockData.price}
+							/>
+						</Form.Group>
+						<Form.Group as={Col} controlId='formGridPassword'>
+							<Form.Label>Total Price</Form.Label>
+							<Form.Control
+								type='Number'
+								name='total'
+								disabled
+								placeholder='total'
+								onChange={(e) =>
+									setStockData({ ...stockData, total_price: e.target.value })
+								}
+								value={stockData.price * stockData.quantity}
 							/>
 						</Form.Group>
 					</Row>

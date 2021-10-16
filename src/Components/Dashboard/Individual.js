@@ -4,11 +4,7 @@ import { Table } from 'react-bootstrap';
 import Moment from 'react-moment';
 
 const Individual = () => {
-	const [stocks, setStocks] = useState([]);
-	const [quantity, setQuantity] = useState([]);
-	const [investment, setInvestment] = useState([]);
-	const [sell, setSell] = useState([]);
-	const [currentAmount, setCurrentAmount] = useState([]);
+	const [stock, setStock] = useState([]);
 
 	useEffect(() => {
 		getData();
@@ -17,21 +13,20 @@ const Individual = () => {
 	const getData = async () => {
 		const response = await fetch('http://localhost:5000/stocks/agg');
 		const body = await response.json();
-		setStocks(body.data);
-		console.log(body.data);
-		// setInvestment(body.data);
-		let quantitySum = '';
+		console.log(body);
 		// let gotSum = 0;
 		// let totalInvestment = 0;
 		// let gotInvestment = 0;
 		for (let i = 0; i < body.data.length; i++) {
-			var buyData = body.data[i]._id[i].stockName;
-			buyData += quantitySum;
-			// console.log(buyData);
-
+			var stockData = body.data[i];
+			// console.log('stock' + stock);
+			console.log(body.data[i]._id);
+			// setStock(body.data[i]._id);
 			// console.log(totalInvestment);
 		}
-		setInvestment(buyData);
+		setStock(body.data);
+
+		console.log(stock);
 		// const soldData = gotInvestment * gotSum;
 		// const investment = totalInvestment * quantitySum;
 
@@ -46,8 +41,8 @@ const Individual = () => {
 		let headerElement = [
 			'stockName',
 			'quantity',
-			'sold amount',
-			'transcation_date',
+			'transcation_type',
+			'totalAmount',
 		];
 
 		return headerElement.map((key, index) => {
@@ -57,11 +52,14 @@ const Individual = () => {
 
 	const renderBody = () => {
 		return (
-			stocks &&
-			stocks.map(({ _id, stockName }) => {
+			stock &&
+			stock.map(({ _id, stockName, quantity, totalAmount, index }) => {
 				return (
 					<tr key={_id}>
-						<td>{stockName} </td>
+						<td>{_id.stockName} </td>
+						<td>{quantity} </td>
+						<td>{_id.transcation_type} </td>
+						<td>{totalAmount} </td>
 					</tr>
 				);
 			})
